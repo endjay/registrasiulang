@@ -29,7 +29,13 @@ class Pendaftaran extends Eloquent  {
 	}
 
 	public static function checkEmail($email){
-		return Pendaftaran::where(array('email'=>$email))->get();
+		$t = Pendaftaran::where(array('email'=>$email))->count();
+
+		if($t > 0 ){
+			return true;
+		}
+
+		return false;
 	}
 
 
