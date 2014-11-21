@@ -24,10 +24,11 @@ class RegisterController extends Controller {
 		}
 
 
-		if($input['email'] == ''){
+		/*if($input['email'] == ''){
 			Session::flash('data',$input);
 			return Redirect::to('')->with('alert_message','email tidak boleh kosong');
 		}
+		*/
 
 		if(Pendaftaran::checkEmail($input['email'])){
 
@@ -142,13 +143,13 @@ class RegisterController extends Controller {
 		$id = Input::get('no_order');
 
 
-		$ok = Peserta::where('sold_id', '=', $id)->update(array('is_coming' => 1));
+		$ok = Peserta::where('id', '=', $id)->update(array('is_coming' => 1));
 
 		if($ok){
-			return Redirect::to('daftar_ulang')->with('success_message','No order '.$id.'di update ');
+			return Redirect::to('daftar_ulang')->with('success_message','Data berhasil di update ');
 		}
 
-		return Redirect::to('daftar_ulang')->with('alert_message','No order '.$id.' gagal di update ');
+		return Redirect::to('daftar_ulang')->with('alert_message','Data Gagal di update');
 	}
 
 

@@ -11,7 +11,7 @@
         <span  class="btn btn-primary cari" rel="nama"> NAMA </span>
      </div>
     <div id="form-s"  style="margin-top:20px"    >   
-		 <form role="form" method="GET" action="/daftar_ulang"  @if(Input::has('s'))style="display:block" @else style="display:none"  @endif >
+		 <form role="form" method="GET" action="/daftar_ulang"  @if(Input::has('e') || Input::has('n'))style="display:none"@endif>
 			  <div class="form-group">
 			    <label for="t_nama">No Order</label>
 			    <input  class="large"@if(Input::has('s'))value="{{Input::get('s')}}" @endif name="s" type="text" class="form-control " id="t_nama" placeholder="Search">
@@ -72,22 +72,33 @@
         @foreach($list as $x => $row)
         <tr>
           <td>{{$offset +=1}}</td>
+          @if( Input::has('s') && count($list) > 1)
+            <td>{{$row->sold_id }} -  {{$row->id}}</td>
+          @else
           <td>{{$row->sold_id}}</td>
+          @endif
           <td>{{$row->sso_name}}</td>
           <td>{{$row->sso_email}}</td>
           <td>{{$row->phone}}</td>
           <td>{{$row->paket}}</td>
           <td>{{$row->total_price}}</td>
           <td>
+            @if($row->paket == 0)
+              <i class="btn btn-primary">Gratisan</i>
+            @else
+
              @if($row->payment_status == 0)
-                  <i class="btn btn-danger">Belum bayar</i>
+                  <i class="btn btn-danger">Belum Bayar</i>
+              @elseif($row->payment_status == 1)
+                 <i class="btn btn-success"> Paid </i>
               @else
-                 <i class="btn btn-success">Sudah bayar</i>
+                  <i class="btn btn-success"> Sudah Bayar </i>
               @endif
+            @endif
           </td>
           <td>
            @if($row->is_coming == 0)
-              <a href="{{URL::to('/check/')}}?no_order={{$row->sold_id}}" class="btn btn-warning" > CHECK </a>
+              <a href="{{URL::to('/check/')}}?no_order={{$row->id}}" class="btn btn-warning" > CHECK </a>
              @else
                  <a href="#" class="btn btn-success" > CHECKED </a>
             @endif
